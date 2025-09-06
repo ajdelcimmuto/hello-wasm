@@ -1,0 +1,5 @@
+- To run
+    - `cargo install wasm-pack`
+    - `cd site`
+    - `npm install`
+    - `npm run serve`
