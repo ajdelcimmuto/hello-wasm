@@ -7,6 +7,8 @@ use m3u8_rs::{MasterPlaylist, MediaPlaylist, Playlist};
 
 #[wasm_bindgen]
 extern "C" {
+    // Dispatch a segment_info call to the js layer. The callback passes a fragmented mp4 that can
+    // be decoded and rendered on the JS side
     pub fn segment_info(s: &[u8]);
 }
 

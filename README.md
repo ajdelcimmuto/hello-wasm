@@ -1,5 +1,6 @@
 - To run
     - `cargo install wasm-pack`
+    - `wasm-pack build --target bundler`
     - `cd site`
     - `npm install`
     - `npm run serve`

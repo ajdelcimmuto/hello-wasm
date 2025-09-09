@@ -31,7 +31,9 @@ function initializeMediaSource() {
     });
 }
 
+// This callback is from the wasm layer
 function segment_info(segmentData) {
+    // SegmentData is a array of bytes in the form of a fragmented mp4
     console.log(`Received segment: ${segmentData.length} bytes`);
     sourceBuffer.appendBuffer(segmentData);
 }
