@@ -96,7 +96,7 @@ impl StreamingClient {
         }
     }
 
-    pub async fn fetch_manifest(&mut self) -> Result<String, JsValue> {
+    pub async fn fetch_master_playlist(&mut self) -> Result<String, JsValue> {
         log::info!("fetch_manifest");
 
         let mut wasm_http_client = WasmHttpClient::new();
@@ -104,7 +104,7 @@ impl StreamingClient {
         wasm_http_client.add_default_header("Accept", "application/vnd.apple.mpegurl");
         let master_playlist_response: WasmResponse = wasm_http_client.get().await?;
 
-        let master_playlist = self.parse_manifest(master_playlist_response.body).unwrap();
+        let master_playlist = self.parse_master_playlist(master_playlist_response.body).unwrap();
 
         match &master_playlist {
             Playlist::MasterPlaylist(pl) => {
@@ -116,7 +116,7 @@ impl StreamingClient {
         Ok(String::new())
     }
 
-    fn parse_manifest(&mut self, manifest: String) -> Result<m3u8_rs::Playlist, String> {
+    fn parse_master_playlist(&mut self, manifest: String) -> Result<m3u8_rs::Playlist, String> {
         let text_bytes: &[u8] = manifest.as_bytes();
 
         let playlist = m3u8_rs::parse_playlist_res(text_bytes).expect("Manifest could not be parsed.");
@@ -138,7 +138,7 @@ impl StreamingClient {
         wasm_http_client.add_default_header("Accept", "application/vnd.apple.mpegurl");
         let media_playlist_response: WasmResponse = wasm_http_client.get().await?;
 
-        let media_playlist = self.parse_manifest(media_playlist_response.body).unwrap();
+        let media_playlist = self.parse_master_playlist(media_playlist_response.body).unwrap();
 
         match &media_playlist {
             Playlist::MediaPlaylist(pl) => {
@@ -214,12 +214,12 @@ mod tests {
     use wasm_bindgen_test::*;
 
     #[wasm_bindgen_test]
-    fn test_parse_manifest() {
+    fn test_parse_master_playlist() {
         let manifest = "#EXTM3U\n#EXT-X-VERSION:7\n#EXT-X-TARGETDURATION:6\n#EXTINF:5.009,\nhttps://media.example.com/first.ts\n#EXTINF:5.009,\nhttps://media.example.com/second.ts\n#EXTINF:3.003,\nhttps://media.example.com/third.ts\n#EXT-X-ENDLIST";
 
         let manifest_string = manifest.to_string();
         let mut streaming_client = StreamingClient::new(String::new());
-        let manifest = streaming_client.parse_manifest(manifest_string).expect("manifest failed to parse");
+        let manifest = streaming_client.parse_master_playlist(manifest_string).expect("manifest failed to parse");
 
         match &manifest {
             Playlist::MasterPlaylist(pl) => {

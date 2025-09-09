@@ -40,7 +40,7 @@ async function main() {
     const client = new StreamingClient("https://stream-fastly.castr.com/5b9352dbda7b8c769937e459/live_2361c920455111ea85db6911fe397b9e/index.fmp4.m3u8");
 
     try {
-        const manifest = await client.fetch_manifest();
+        const manifest = await client.fetch_master_playlist();
         console.log("Starting live stream segment fetching...");
 
     } catch (error) {
