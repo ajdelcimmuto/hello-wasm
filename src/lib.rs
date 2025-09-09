@@ -7,18 +7,7 @@ use m3u8_rs::{MasterPlaylist, MediaPlaylist, Playlist};
 
 #[wasm_bindgen]
 extern "C" {
-    pub fn alert(s: &str);
     pub fn segment_info(s: &[u8]);
-}
-
-#[wasm_bindgen]
-pub fn greet(name: &str) {
-    alert(&format!("Hello, {}!", name));
-}
-
-#[wasm_bindgen]
-pub fn set_url(url: &str) {
-    alert(&format!("URL, {}!", url));
 }
 
 #[wasm_bindgen]
